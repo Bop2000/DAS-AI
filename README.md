@@ -4,7 +4,7 @@ Designing alloy from 100\% scrap with multi-modal AI
 
 ## Sample Code
 
-Here's an example of how to use DAS-AI, execute the following code in the project root directory:
+Here's a detailed example of how to use DAS-AI, execute the following code in the project root directory:
 
 ```python
 import numpy as np

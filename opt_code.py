@@ -8,12 +8,12 @@ import random
 from sklearn.preprocessing import StandardScaler
 
 
-from DAS_AI.initialize import create_folders,load_data,design_space
-from DAS_AI.neural_surrogate import TensileSurrogateModel
-from DAS_AI.objective_func import obj_function
-from DAS_AI.tree_exploration import TreeExploration
-from DAS_AI.pareto_front import pareto_frontier,pareto_evaluation,pareto_score
-from DAS_AI.save_file import save_excel
+from das_ai.initialize import create_folders,load_data,design_space
+from das_ai.neural_surrogate import TensileSurrogateModel
+from das_ai.objective_func import obj_function
+from das_ai.tree_exploration import TreeExploration
+from das_ai.pareto_front import pareto_frontier,pareto_evaluation,pareto_score
+from das_ai.save_file import save_excel
 
 
 ############################### Initialization ###############################

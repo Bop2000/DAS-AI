@@ -3,16 +3,15 @@ requires = ["setuptools>=75.1.0", "wheel>=0.44.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dante"
+name = "das_ai"
 version = "0.1.0"
-description = "Dante: Deep Active Learning using Neural Surrogates and Tree Exploration"
+description = "DAS-AI: Designing alloy from 100% scrap with multi-modal AI"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Po-Yen Tung", email = "poyentung@gmail.com"},
     {name = "Bo Peng", email = "pengb21@mails.tsinghua.edu.cn"},
-    {name = "Ye Wei", email = "ye.wei@epfl.ch"},
+    {name = "Ye Wei", email = "ye.wei@cityu.edu.hk"},
 ]
 
 classifiers = [
@@ -20,18 +19,18 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.8.5",
 ]
 
 dependencies = [
-    "numpy>=1.26.4",
+    "numpy>=1.19.5",
     "pandas>=1.4.4",
     "matplotlib>=3.6.3",
     "seaborn>=0.12.2",
     "scikit-learn>=1.2.2",
-    "tensorflow>=2.16.2",
-    "pytest>=8.3.3",
-    "tqdm>=4.66.4",
+    "tensorflow>=2.5.0",
+    "pytest>=7.3.1",
+    "tqdm>=4.65.0",
 ]
 
 [project.optional-dependencies]
@@ -41,10 +40,10 @@ dev = [
     "jupyter>=1.0.0",
 ]
 [project.urls]
-"Homepage" = "https://github.com/Bop2000/DANTE"
+"Homepage" = "https://github.com/Bop2000/DAS-AI"
 
 [tool.setuptools]
-packages = ["dante"]
+packages = ["das_ai"]
 
 [tool.setuptools.package-data]
-dante = ["LICENSE", "README.md"]
+das_ai = ["LICENSE", "README.md"]

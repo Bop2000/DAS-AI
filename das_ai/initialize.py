@@ -157,7 +157,7 @@ def load_data(
     plt.plot(data1[pareto_front], y_fit, 'g')
     plt.xlabel('Ultimate tensile strength (MPa)')
     plt.ylabel('Elongation to fracture (%)')
-    # plt.title("Tensile strength vs Elongation")
+    plt.title(f"{file_name}")
     plt.legend()
     
     print('fano factor of Tensile strength:',np.var(data1)/np.mean(data1))
@@ -207,5 +207,6 @@ def load_data(
     g.ax_marg_y.tick_params(length=7, width=2)
     plt.xlabel('Elongation to fracture (%)')
     plt.ylabel('Ultimate tensile strength (MPa)')
+    plt.title(f"{file_name}")
     plt.show()
     return input_x, data1, data2, coef_fit, scaler_x, scaler_y1, scaler_y2

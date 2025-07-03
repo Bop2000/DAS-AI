@@ -30,7 +30,7 @@ python -m pytest -m "not slow"
 
 ## DAS-AI optimization
 
-Here's a detailed example of how to use DAS-AI, execute the following code in the project root directory:
+Here's a detailed example of how to use DAS-AI, before you execute the following code, please download the Excel file in "data" folder:
 
 ```python
 import numpy as np

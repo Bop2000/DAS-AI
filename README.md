@@ -1,8 +1,34 @@
 # DAS-AI
 Designing alloy from 100\% scrap with multi-modal AI
 
+## Installation
 
-## Sample Code
+DAS-AI requires `python>=3.8`. Installation of TensorFlow and Keras with CUDA support is strongly recommended.
+
+To install DAS-AI, run:
+
+```bash
+pip install git+https://github.com/Bop2000/DAS-AI.git
+```
+
+Alternatively, you can clone the repository and install it locally:
+
+```bash
+git clone git@github.com:Bop2000/DAS-AI.git
+cd DAS-AI
+pip install -e .
+```
+
+## Running Tests
+
+To run tests for DAS-AI, execute the following command in the project root directory:
+
+```bash
+python -m pytest -m "not slow"
+```
+
+
+## DAS-AI optimization
 
 Here's a detailed example of how to use DAS-AI, execute the following code in the project root directory:
 
@@ -275,4 +301,6 @@ plt.legend()
 save_excel(sample_pf_top_c,sample_UTS,sample_Ef,param_space,path2)
 ```
  
+## License
 
+The source code is released under the MIT license, as presented in [here](LICENSE).

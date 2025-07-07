@@ -18,7 +18,6 @@ class TreeExploration:
     Attributes:
 
         func (class): Objective function to evaluate the performance of new params.
-        Q (dict): Dict to record rewward.
         N (dict): Dict to record numebr of visit.
         children (dict): Dict to record leaf nodes information.
         rollout_round (int): Rollout times, i.e. expansion times of tree search.
@@ -34,7 +33,6 @@ class TreeExploration:
     """
     
     func: Optional[obj_function] = None
-    Q: Dict[Any, int] = field(default_factory=lambda: defaultdict(int))
     N: Dict[Any, int] = field(default_factory=lambda: defaultdict(int))
     children: Dict[Any, Set] = field(default_factory=dict)
     rollout_round: int = 200
@@ -50,10 +48,6 @@ class TreeExploration:
         if node.is_terminal():
             raise RuntimeError(f"choose called on terminal node {node}")
 
-        if node not in self.children:
-            print("Not seen before, randomly sampled!")
-            return node.find_random_child()
-
         log_N_vertex = math.log(self.N[node])
 
         def uct(n):
@@ -61,8 +55,6 @@ class TreeExploration:
             return n.value + self.exploration_weight * math.sqrt(
                 log_N_vertex / (self.N[n] + 1)
             )
-
-        self.children[node] = node.find_children(node, self.func)
 
         media_node = max(self.children[node], key=uct)
         node_rand = [
@@ -78,11 +70,18 @@ class TreeExploration:
 
     def do_rollout(self, node):
         """Make the tree one layer better. (Train for one iteration.)"""
-        path = self._select(node)
-        leaf = path[-1]
-        self._expand(leaf)
-        reward = self._simulate(leaf)
-        self._backpropagate(path, reward)
+        self._expand(node)
+        self._backpropagate(path=node)
+    
+    def _expand(self, node):
+        """Update the `children` dict with the children of `node`"""
+        self.children[node] = node.find_children(
+            node, self.func
+        )
+
+    def _backpropagate(self, path):
+        """Send the reward back up to the ancestors of the leaf"""
+        self.N[path] += 1
 
     @staticmethod
     def data_process(x: np.ndarray, boards: List[list]) -> np.ndarray:
@@ -190,13 +189,17 @@ class TreeExploration:
         x_top = []
         for initial_X in x_current_top:
             print('initial_X:',initial_X)
-            values = max(y)
-            self.exploration_weight = self.ratio * abs(values)
-            board_uct = OptTask(tup=tuple(initial_X), value=values, terminal=False)
+            self.exploration_weight = self.ratio * abs(max(y))
+            board_uct = OptTask(
+                tup=tuple(initial_X), 
+                value=float(self.func(initial_X.reshape(1,-1))), 
+                terminal=False
+                )
             x_top.append(self.single_rollout(x, board_uct, self.num_list))
         # return np.vstack(x_top)[: self.num_samples_per_acquisition]
         return np.vstack(x_top)
     
+   
     def _get_unique_top_points(
             self, 
             X: np.ndarray, 
@@ -216,50 +219,6 @@ class TreeExploration:
 
         return x_current_top
 
-    def _select(self, node) -> list:
-        """Find an unexplored descendent of `node`"""
-        path = []
-        for _ in range(50):  # Limit depth to 50
-            path.append(node)
-            if node not in self.children or not self.children[node]:
-                return path
-            unexplored = self.children[node] - self.children.keys()
-            if unexplored:
-                path.append(max(unexplored, key=lambda n: n.value))
-                return path
-            node = self._uct_select(node)
-        return path
-
-    def _expand(self, node):
-        """Update the `children` dict with the children of `node`"""
-        if node not in self.children:
-            self.children[node] = node.find_children(
-                node, self.func
-            )
-
-    def _simulate(self, node) -> float:
-        """Returns the reward for a random simulation (to completion) of `node`"""
-        return node.reward(node, self.func)
-
-    def _backpropagate(self, path: list, reward: float):
-        """Send the reward back up to the ancestors of the leaf"""
-        for node in reversed(path):
-            self.N[node] += 1
-            self.Q[node] += reward
-
-    def _uct_select(self, node):
-        """Select a child of node, balancing exploration & exploitation"""
-        assert all(n in self.children for n in self.children[node])
-        log_N_vertex = math.log(self.N[node])
-
-        def uct(n):
-            return n.value + self.exploration_weight * math.sqrt(
-                log_N_vertex / (self.N[n] + 1)
-            )
-
-        return max(self.children[node], key=uct)
-
-
 class Node(ABC):
     """
     A representation of a single board state.
@@ -273,19 +232,9 @@ class Node(ABC):
         return set()
 
     @abstractmethod
-    def find_random_child(self):
-        """Random successor of this board state (for more efficient simulation)"""
-        return None
-
-    @abstractmethod
     def is_terminal(self):
         """Returns True if the node has no children"""
         return True
-
-    @abstractmethod
-    def reward(self):
-        """Assumes `self` is terminal node. 1=win, 0=loss, .5=tie, etc"""
-        return 0
 
     @abstractmethod
     def __hash__(self):
@@ -362,12 +311,6 @@ class OptTask(_OT, Node):
         print('Predicted score of leaf nodes:',all_values)
 
         return {OptTask(tuple(t), v, False) for t, v in zip(all_tuples, all_values)}
-
-    @staticmethod
-    def reward(board, func):
-        """Calculate the reward for the current board state."""
-        values = func(np.array(board.tup).reshape(1, -1, 1))
-        return float(np.array(values).reshape(1))
 
     def is_terminal(self):
         """Check if the current board state is terminal."""

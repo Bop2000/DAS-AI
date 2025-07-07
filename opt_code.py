@@ -231,7 +231,7 @@ Attributes for TreeExploration:
 tree_explorer = TreeExploration(
     func = obj_func, 
     rollout_round = 200,
-    ratio = 0.2,
+    ratio = 0.05,
     num_list = [5,3,1,1],
     n_tree = 10,
     num_samples_per_acquisition = 20

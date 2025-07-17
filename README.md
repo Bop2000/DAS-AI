@@ -301,10 +301,8 @@ plt.legend()
 save_excel(sample_pf_top_c,sample_UTS,sample_Ef,param_space,path2)
 ```
 ## Pseudocode
-We present a high-level description of the DAS-AI designed to find the global maximum of an objective function *x*<sup>*</sup> = argmax*f*(x),x∈ X,, where \( x \) is the input vector and \( X \subseteq \mathbb{R}^N \) is the search space of dimension \( N \). The algorithm begins by randomly sampling a dataset \( D = \{(x_i, y_i)\}_{i=1}^n \), where \( y_i = f(x_i) \). This dataset is then used to train a data-driven surrogate model \(m = \mathbf{Model}(D) \) to fit the distribution of the dataset $D$.
-```
-We present a high-level description of the NTE designed to find the global maximum of an objective function \( x^* = \operatorname{argmax}_{x \in X} f(x) \), where \( x \) is the input vector and \( X \subseteq \mathbb{R}^N \) is the search space of dimension \( N \). The algorithm begins by randomly sampling a dataset \( D = \{(x_i, y_i)\}_{i=1}^n \), where \( y_i = f(x_i) \). This dataset is then used to train a data-driven surrogate model \( m = \text{Model}(D) \) to fit the distribution of the dataset \( D \).
-```
+We present a high-level description of the DAS-AI designed to find the global maximum of an objective function $*x*<sup>*</sup> = argmax*f*(x),x ∈ X$,, where $x$ is the input vector and $X \subseteq \mathbb{R}^N$ is the search space of dimension $N$. The algorithm begins by randomly sampling a dataset $D = \{(x_i, y_i)\}_{i=1}^n \$, where $y_i = f(x_i)$. This dataset is then used to train a data-driven surrogate model $m = \mathbf{Model}(D)$ to fit the distribution of the dataset $D$.
+
 <p align="center">
   <img src="assets/pseudocode.png" alt="Pseudocode" width="600">
 </p>

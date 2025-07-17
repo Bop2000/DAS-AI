@@ -300,7 +300,47 @@ plt.legend()
 """Save best samples"""
 save_excel(sample_pf_top_c,sample_UTS,sample_Ef,param_space,path2)
 ```
- 
+## Pseudocode
+Algorithm: Neural-surrogate-guided Tree Exploration
+
+Input: 
+    function f, 
+    dataset D = {(x_i, y_i)}_{i=1}^n, 
+    exploration coefficient c0, 
+    rollout round k
+Output: 
+    X_top, y_top
+
+Initialization:
+    surrogate model m = Model(D)
+    exploration weight c = c0 * |max_i(m(x_i))|
+    x_init = x_{argmax_i y_i}
+    X_top = {x_init}
+    y_top = {max_i y_i}
+    node visit number N = 0
+
+for i = 1 to k do:
+    create root node v0 with state x_init
+    V = Expand(v0, actions)  // Expand to leaf nodes
+    y = m(V)                 // Evaluate surrogate model
+    
+    // Select node with maximum UCB-like score
+    v = argmax [y + c * sqrt( (2 * log(N)) / (n+1) )]
+    
+    // Update visit counts
+    N(v0) = N(v0) + 1
+    n(v) = n(v) + 1
+    
+    // Path selection
+    if DUCB_root > DUCB_leaf:
+        x_init = v0.state
+    else:
+        x_init = v.state
+
+x_new = Top n nodes from tree
+X_top = X_top ∪ x_new
+y_top = y_top ∪ m(x_new)
+
 ## License
 
 The source code is released under the MIT license, as presented in [here](LICENSE).

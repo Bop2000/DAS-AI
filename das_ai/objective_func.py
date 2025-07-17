@@ -28,7 +28,7 @@ class obj_function:
     """
     
     dims: int = 40
-    coef_fit: np.ndarray = np.zeros(3)
+    coef_fit: np.ndarray = field(default_factory=lambda: np.zeros(3))
 
     surrogate1: Optional[TensileSurrogateModel] = None
     surrogate2: Optional[TensileSurrogateModel] = None

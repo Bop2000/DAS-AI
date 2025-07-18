@@ -65,6 +65,7 @@ python -m pytest -m "not slow"
 
 ## DAS-AI optimization
 
+The demo notebook with code execution history can be found in folder `notebook`.
 Here's a detailed example of how to use DAS-AI, before you execute the following code, `please download the Excel file in "data" folder`:
 
 ```python

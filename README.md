@@ -289,7 +289,7 @@ tree_explorer = TreeExploration(
     num_samples_per_acquisition = 20
     )
 
-# Perform tree exploration to find promising samples for each target relative density
+# Perform tree exploration to find promising samples
 input_x = np.array(X_input)
 input_y = obj_func.score_eval(y1,y2)
 new_xs = []
